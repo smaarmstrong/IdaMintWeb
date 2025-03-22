@@ -9,13 +9,13 @@ type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'id' | 'value' | '
   type?: string;
 };
 
-const Input: React.FC<InputProps> = ({ 
-  id, 
-  children, 
-  value, 
-  onChange, 
+const Input: React.FC<InputProps> = ({
+  id,
+  children,
+  value,
+  onChange,
   type = 'text',
-  ...props 
+  ...props
 }) => {
   return (
     <div>

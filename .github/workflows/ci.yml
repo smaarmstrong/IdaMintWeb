@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "23.10.0"
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}"
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store
+
+      - name: Install Node.js dependencies
+        run: pnpm install
+
+      - name: Verify ESLint configuration
+        run: test -f .eslintrc.js && echo ".eslintrc.js found" || echo ".eslintrc.js not found"
+
+      - name: Run ESLint
+        run: pnpm run lint
+
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+
+      - name: Install pre-commit
+        run: |
+          pip install pre-commit
+          pre-commit install
+
+      - name: Disable ESLint in pre-commit
+        run: |
+          sed -i '/- repo: https:\/\/github.com\/pre-commit\/mirrors-eslint/,/^$/ s/^/#/' .pre-commit-config.yaml
+
+      - name: Run pre-commit hooks
+        env:
+          PRE_COMMIT_COLOR: always
+          TERM: xterm-256color
+        run: pre-commit run --all-files

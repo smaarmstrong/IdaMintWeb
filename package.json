@@ -12,6 +12,7 @@
   "dependencies": {
     "@ada-anvil/weld": "^0.5.0",
     "@lucid-evolution/lucid": "^0.4.24",
+    "@tailwindcss/postcss": "^4.0.15",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

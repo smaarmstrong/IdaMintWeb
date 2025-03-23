@@ -8,7 +8,6 @@ export default defineConfig({
   plugins: [react(), wasm(), topLevelAwait()],
   server: {
     fs: {
-      // Allow serving files from project root and specific files
       allow: [
         path.resolve(__dirname, '.'),
         "plutus.json",
@@ -19,7 +18,6 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      // Add any path aliases if needed
       '@': path.resolve(__dirname, './src'),
     },
   },

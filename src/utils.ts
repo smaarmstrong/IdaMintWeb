@@ -1,4 +1,4 @@
-import blueprint from "../plutus.json"; // Note: Path may need adjustment based on your project structure
+import blueprint from "../plutus.json";
 
 export type Validators = {
   nfcChip: string;

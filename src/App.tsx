@@ -1,36 +1,33 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import './index.css'
+import { useState, useEffect } from 'react';
+import { readValidators } from './utils';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [validator, setValidator] = useState<string>('');
+  
+  useEffect(() => {
+    try {
+      const validatorData = readValidators().nfcChip;
+      setValidator(validatorData);
+    } catch (error) {
+      console.error('Error loading validator:', error);
+    }
+  }, []);
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="mx-auto mb-10 mt-20 max-w-2xl">
+        <div className="mb-10">
+          <h2 className="text-lg font-semibold text-gray-900">Make a one shot minting and lock contract</h2>
+          
+          <h3 className="mb-2 mt-4">NFC Chip Template</h3>
+          <pre className="overflow-x-scroll rounded bg-gray-200 p-2">{validator}</pre>
+        </div>
+      
+        <div>IdaMint</div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
